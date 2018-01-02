@@ -5,7 +5,12 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.ComposePathEffect;
+import android.graphics.CornerPathEffect;
+import android.graphics.DashPathEffect;
+import android.graphics.DiscretePathEffect;
 import android.graphics.Paint;
+import android.graphics.Path;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.support.annotation.Nullable;
@@ -31,6 +36,8 @@ public class MyShowingCanvasView extends View{
     RectF dstTmp;
 
     Bitmap santaBmp;
+
+    Path mPath;
 
     public MyShowingCanvasView(Context context) {
         super(context);
@@ -60,6 +67,8 @@ public class MyShowingCanvasView extends View{
         dstTmp = new RectF();
 
         santaBmp = BitmapFactory.decodeResource(getResources(), R.drawable.santa);
+
+        mPath = new Path();
     }
 
 
@@ -193,15 +202,120 @@ public class MyShowingCanvasView extends View{
 
 
 
-        srcTmp.set(0,0,
+        /*srcTmp.set(0,0,
                 santaBmp.getWidth(),
                 santaBmp.getHeight());
         dstTmp.set(dp2px(30),dp2px(30),
                 dp2px(210),dp2px(210));
         canvas.drawBitmap(santaBmp,
-                srcTmp,dstTmp,mPaint);
+                srcTmp,dstTmp,mPaint);*/
 
 
+
+
+
+        /*mPaint.setAntiAlias(true);
+
+
+        float currentX = getWidth()/2;
+        float currentY = getHeight()/2;
+        mPath.moveTo(currentX,currentY);
+
+        currentX += dp2px(30);
+        mPath.lineTo(currentX,currentY);
+
+        currentY -= dp2px(30);
+        mPath.lineTo(currentX,currentY);
+
+        currentX -= dp2px(60);
+        mPath.lineTo(currentX,currentY);
+
+        currentY += dp2px(60);
+        mPath.lineTo(currentX,currentY);
+
+        currentX += dp2px(90);
+        mPath.lineTo(currentX,currentY);
+
+        currentX += dp2px(30);
+        mPath.addCircle(currentX,currentY,
+                dp2px(30), Path.Direction.CW);
+
+        mPaint.setColor(Color.MAGENTA);
+        mPaint.setStyle(Paint.Style.STROKE);
+        mPaint.setStrokeWidth(dp2px(3));
+
+
+        //Corner Path Effect
+        *//*cornerPathEffect(mPaint);*//*
+
+        //Dash Path Effect
+        *//*dashPathEffect(mPaint);*//*
+
+        //Discrete Path Effect
+        *//*discretePathEffect(mPaint);*//*
+
+        //Compose Path Effect
+        *//*composePathEffect();*//*
+
+        canvas.drawPath(mPath,mPaint);*/
+
+
+    }
+
+    private void cornerPathEffect(Paint mPaint) {
+
+        float radius = dp2px(12);
+        CornerPathEffect cornerEffect =
+                new CornerPathEffect(radius);
+        mPaint.setPathEffect(cornerEffect);
+
+    }
+
+    private void dashPathEffect(Paint mPaint) {
+
+        float[] intervals =
+                new float[] {
+                dp2px(20),dp2px(10)};
+        DashPathEffect dashEffect =
+                new DashPathEffect(
+                        intervals,0);
+        mPaint.setPathEffect(dashEffect);
+
+    }
+
+    private void discretePathEffect(Paint mPaint) {
+
+        float segmentLength = dp2px(2);
+        float deviation = dp2px(4);
+
+        DiscretePathEffect discreteEffect =
+                new DiscretePathEffect(
+                        segmentLength
+                        ,deviation);
+        mPaint.setPathEffect(discreteEffect);
+
+    }
+
+    private void composePathEffect() {
+
+        float[] intervals =
+                new float[] {
+                        dp2px(20),dp2px(10)};
+        DashPathEffect dashEffect =
+                new DashPathEffect(
+                        intervals,0);
+
+
+        float radius = dp2px(12);
+        CornerPathEffect cornerPathEffect =
+                new CornerPathEffect(radius);
+
+
+        ComposePathEffect composeEffect =
+                new ComposePathEffect(
+                        dashEffect,
+                        cornerPathEffect);
+        mPaint.setPathEffect(composeEffect);
     }
 
     @Override

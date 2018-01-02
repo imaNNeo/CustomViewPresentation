@@ -1,14 +1,18 @@
 package com.neo.customviewpresentation.customviews;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Rect;
 import android.graphics.RectF;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
 
+import com.neo.customviewpresentation.R;
 import com.neo.customviewpresentation.SizeConverter;
 
 /**
@@ -23,6 +27,10 @@ public class MyShowingCanvasView extends View{
     Paint mPaint;
 
     RectF tempRect;
+    Rect srcTmp;
+    RectF dstTmp;
+
+    Bitmap santaBmp;
 
     public MyShowingCanvasView(Context context) {
         super(context);
@@ -48,6 +56,10 @@ public class MyShowingCanvasView extends View{
         mPaint = new Paint();
 
         tempRect = new RectF();
+        srcTmp = new Rect();
+        dstTmp = new RectF();
+
+        santaBmp = BitmapFactory.decodeResource(getResources(), R.drawable.santa);
     }
 
 
@@ -60,7 +72,7 @@ public class MyShowingCanvasView extends View{
             }
 
             for(int y = 1;y<=8;y++){
-                canvas.drawLine(0, y*axisXYSize,getHeight(),y*axisXYSize, axisPaint);
+                canvas.drawLine(0, y*axisXYSize,getWidth(),y*axisXYSize, axisPaint);
             }
         }
 
@@ -149,13 +161,59 @@ public class MyShowingCanvasView extends View{
                 true,mPaint);*/
 
 
-//        canvas.drawText();
+
+
+
+
+        /*Rect tempRect = new Rect();
+        mPaint.setAntiAlias(true);
+
+
+
+        String text = "Left Top";
+        mPaint.setColor(Color.RED);
+        mPaint.setStyle(Paint.Style.FILL);
+        mPaint.setTextSize(sp2px(30));
+        canvas.drawText(text,
+                dp2px(30),dp2px(60),mPaint);
+
+
+
+        mPaint.setStrokeWidth(dp2px(1));
+        mPaint.setStyle(Paint.Style.STROKE);
+        mPaint.setColor(Color.BLUE);
+        mPaint.getTextBounds(text, 0,text.length(), tempRect);
+        canvas.drawRect(dp2px(30),dp2px(60)-tempRect.height(),
+                dp2px(30) + tempRect.width(),dp2px(60),mPaint);*/
+
+
+
+
+
+
+
+
+        srcTmp.set(0,0,
+                santaBmp.getWidth(),
+                santaBmp.getHeight());
+        dstTmp.set(dp2px(30),dp2px(30),
+                dp2px(210),dp2px(210));
+        canvas.drawBitmap(santaBmp,
+                srcTmp,dstTmp,mPaint);
 
 
     }
 
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        setMeasuredDimension((int)dp2px(300),(int)dp2px(240));
+    }
 
     private float dp2px(int dp){
         return SizeConverter.dpToPx(getContext(),dp);
+    }
+    private float sp2px(int sp){
+        return SizeConverter.spToPx(getContext(),sp);
     }
 }

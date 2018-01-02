@@ -3,16 +3,19 @@ package com.neo.customviewpresentation.customviews;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.BitmapShader;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.ComposePathEffect;
 import android.graphics.CornerPathEffect;
 import android.graphics.DashPathEffect;
 import android.graphics.DiscretePathEffect;
+import android.graphics.LinearGradient;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.graphics.Shader;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
@@ -32,10 +35,13 @@ public class MyShowingCanvasView extends View{
     Paint mPaint;
 
     RectF tempRect;
+    Rect tempRect2;
     Rect srcTmp;
     RectF dstTmp;
 
     Bitmap santaBmp;
+    Bitmap patternBg;
+    Bitmap patternText;
 
     Path mPath;
 
@@ -63,12 +69,16 @@ public class MyShowingCanvasView extends View{
         mPaint = new Paint();
 
         tempRect = new RectF();
+        tempRect2 = new Rect();
         srcTmp = new Rect();
         dstTmp = new RectF();
 
         santaBmp = BitmapFactory.decodeResource(getResources(), R.drawable.santa);
 
         mPath = new Path();
+
+        patternBg = BitmapFactory.decodeResource(getResources(),R.drawable.pattern4);
+        patternText = BitmapFactory.decodeResource(getResources(),R.drawable.pattern2);
     }
 
 
@@ -260,6 +270,13 @@ public class MyShowingCanvasView extends View{
         canvas.drawPath(mPath,mPaint);*/
 
 
+
+
+//        drawTextShader(canvas);
+
+        drawBitmapShader(canvas);
+
+
     }
 
     private void cornerPathEffect(Paint mPaint) {
@@ -317,6 +334,81 @@ public class MyShowingCanvasView extends View{
                         cornerPathEffect);
         mPaint.setPathEffect(composeEffect);
     }
+
+    private void drawTextShader(Canvas canvas) {
+        mPaint.setAntiAlias(true);
+        mPaint.setTextSize(sp2px(28));
+        mPaint.setStyle(Paint.Style.FILL_AND_STROKE);
+        mPaint.setStrokeWidth(dp2px(2));
+
+
+        String text = "Linear Gradient Shader";
+        mPaint.getTextBounds(text,
+                0,text.length(),
+                tempRect2);
+
+        int[] colors = new int[] {
+                Color.RED,
+                Color.GREEN,
+                Color.BLUE,
+                Color.MAGENTA
+        };
+        Shader shader =
+                new LinearGradient(0, 0,
+                        tempRect2.width(),0 ,
+                        colors, null,
+                        Shader.TileMode.MIRROR);
+
+        mPaint.setShader(shader);
+
+        float centerX = getWidth()/2;
+        float centerY = getHeight()/2;
+        canvas.drawText(text,
+                centerX - tempRect2.width()/2 ,
+                centerY + tempRect2.height()/2,
+                mPaint);
+    }
+
+    private void drawBitmapShader(Canvas canvas) {
+        mPaint.setAntiAlias(true);
+        mPaint.setTextSize(sp2px(42));
+        mPaint.setStyle(Paint.Style.FILL_AND_STROKE);
+        mPaint.setStrokeWidth(dp2px(2));
+
+
+        BitmapShader bgShader =
+                new BitmapShader(patternBg,
+                        Shader.TileMode.REPEAT,
+                        Shader.TileMode.REPEAT);
+        tempRect.set(0,0,getWidth(),getHeight());
+        mPaint.setShader(bgShader);
+        canvas.drawRect(tempRect,mPaint);
+
+
+
+        String text = "Bitmap Shader";
+        mPaint.getTextBounds(text,
+                0,text.length(),
+                tempRect2);
+
+
+        BitmapShader textShader =
+                new BitmapShader(patternText,
+                        Shader.TileMode.REPEAT,
+                        Shader.TileMode.REPEAT);
+
+        float centerX = getWidth()/2;
+        float centerY = getHeight()/2;
+        mPaint.setShader(textShader);
+        canvas.drawText(text,
+                centerX - tempRect2.width()/2 ,
+                centerY + tempRect2.height()/2,
+                mPaint);
+
+
+
+    }
+
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {

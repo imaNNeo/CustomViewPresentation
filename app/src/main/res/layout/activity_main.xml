@@ -35,7 +35,7 @@
                 android:layout_marginTop="12dp"
                 />
 
-            <com.neo.customviewpresentation.customviews.MyCircleView
+            <com.neo.customviewpresentation.customviews.MyTwoCircleView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
@@ -54,6 +54,16 @@
         android:layout_height="wrap_content"
         android:text="Open Canvas Activity"
         app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/btn_circleActivity"
+        />
+
+    <Button
+        android:id="@+id/btn_circleActivity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Open Circle Activity"
+        app:layout_constraintLeft_toRightOf="@id/btn_canvasActivity"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         />

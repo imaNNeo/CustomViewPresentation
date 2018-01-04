@@ -418,56 +418,7 @@ public class MyShowingCanvasView extends View{
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-
-
-        //Width
-        int widthMeasureMode = MeasureSpec.getMode(widthMeasureSpec);
-        int widthMeasureSize = MeasureSpec.getSize(widthMeasureSpec);
-
-        int width = 0;
-        switch (widthMeasureMode){
-            case MeasureSpec.UNSPECIFIED:
-                width = getDesireWidth();
-                break;
-            case MeasureSpec.EXACTLY :
-                width = widthMeasureSize;
-                break;
-            case MeasureSpec.AT_MOST :
-                width = Math.min(widthMeasureSize,getDesireWidth());
-                break;
-        }
-
-
-        //Height
-        int heightMeasureMode = MeasureSpec.getMode(heightMeasureSpec);
-        int heightMeasureSize = MeasureSpec.getSize(heightMeasureSpec);
-
-        int height = 0;
-        switch (heightMeasureMode){
-            case MeasureSpec.UNSPECIFIED:
-                height = getDesireHeight();
-                break;
-            case MeasureSpec.EXACTLY :
-                height = heightMeasureSize;
-                break;
-            case MeasureSpec.AT_MOST :
-                height = Math.min(heightMeasureSize,getDesireHeight());
-                break;
-        }
-        //Tell to system measured size in px
-        setMeasuredDimension(width,height);
-
-
-
         setMeasuredDimension((int)dp2px(300),(int)dp2px(240));
-    }
-
-    private int getDesireHeight() {
-        return 0;
-    }
-
-    private int getDesireWidth() {
-        return 0;
     }
 
     private float dp2px(int dp){

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="MyCircleView">
+        <attr name="mcv_stroke_size" format="dimension" />
+    </declare-styleable>
+</resources>
+
+<!--(Convention) Use mcv_ for attr names-->

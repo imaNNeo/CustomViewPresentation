@@ -97,18 +97,22 @@ public class MyShowingCanvasView extends View{
 
 
 
-        /*mPaint.setStrokeWidth(dp2px(15));
+        /*
+        //Green Line
+        mPaint.setStrokeWidth(dp2px(15));
         mPaint.setColor(Color.GREEN);
         canvas.drawLine(dp2px(30),dp2px(30),
                 dp2px(270),dp2px(150),mPaint);
 
 
+        //Red Line
         mPaint.setStrokeWidth(dp2px(15));
         mPaint.setColor(Color.RED);
         canvas.drawLine(dp2px(30),dp2px(150),
                 dp2px(270),dp2px(30),mPaint);
 
 
+        //Magenta Line
         mPaint.setStrokeWidth(dp2px(10));
         mPaint.setColor(Color.MAGENTA);
         canvas.drawLine(dp2px(0),dp2px(120),
@@ -126,14 +130,15 @@ public class MyShowingCanvasView extends View{
 
 
 
-        /*mPaint.setStrokeWidth(dp2px(16));
+        /*//Black circle
+        mPaint.setStrokeWidth(dp2px(16));
         mPaint.setColor(Color.BLACK);
         mPaint.setStyle(Paint.Style.STROKE);
         canvas.drawCircle(dp2px(150),dp2px(120),
                             dp2px(90),mPaint);
 
 
-        mPaint.setStrokeWidth(dp2px(16));
+        //Magenta Circle
         mPaint.setColor(Color.MAGENTA);
         mPaint.setStyle(Paint.Style.FILL);
         mPaint.setAntiAlias(true);
@@ -141,6 +146,7 @@ public class MyShowingCanvasView extends View{
                 dp2px(60),mPaint);
 
 
+        //Green Circle
         mPaint.setStrokeWidth(dp2px(16));
         mPaint.setColor(Color.GREEN);
         mPaint.setStyle(Paint.Style.FILL_AND_STROKE);
@@ -184,7 +190,10 @@ public class MyShowingCanvasView extends View{
 
 
 
-        /*Rect tempRect = new Rect();
+
+
+
+       /*Rect tempRect = new Rect();
         mPaint.setAntiAlias(true);
 
 
@@ -254,18 +263,17 @@ public class MyShowingCanvasView extends View{
         mPaint.setStyle(Paint.Style.STROKE);
         mPaint.setStrokeWidth(dp2px(3));
 
-
         //Corner Path Effect
-        *//*cornerPathEffect(mPaint);*//*
+        cornerPathEffect(mPaint);
 
         //Dash Path Effect
-        *//*dashPathEffect(mPaint);*//*
+        dashPathEffect(mPaint);
 
         //Discrete Path Effect
-        *//*discretePathEffect(mPaint);*//*
+        discretePathEffect(mPaint);
 
         //Compose Path Effect
-        *//*composePathEffect();*//*
+        composePathEffect();
 
         canvas.drawPath(mPath,mPaint);*/
 
@@ -384,13 +392,10 @@ public class MyShowingCanvasView extends View{
         mPaint.setShader(bgShader);
         canvas.drawRect(tempRect,mPaint);
 
-
-
         String text = "Bitmap Shader";
         mPaint.getTextBounds(text,
                 0,text.length(),
                 tempRect2);
-
 
         BitmapShader textShader =
                 new BitmapShader(patternText,
@@ -413,7 +418,56 @@ public class MyShowingCanvasView extends View{
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+
+
+        //Width
+        int widthMeasureMode = MeasureSpec.getMode(widthMeasureSpec);
+        int widthMeasureSize = MeasureSpec.getSize(widthMeasureSpec);
+
+        int width = 0;
+        switch (widthMeasureMode){
+            case MeasureSpec.UNSPECIFIED:
+                width = getDesireWidth();
+                break;
+            case MeasureSpec.EXACTLY :
+                width = widthMeasureSize;
+                break;
+            case MeasureSpec.AT_MOST :
+                width = Math.min(widthMeasureSize,getDesireWidth());
+                break;
+        }
+
+
+        //Height
+        int heightMeasureMode = MeasureSpec.getMode(heightMeasureSpec);
+        int heightMeasureSize = MeasureSpec.getSize(heightMeasureSpec);
+
+        int height = 0;
+        switch (heightMeasureMode){
+            case MeasureSpec.UNSPECIFIED:
+                height = getDesireHeight();
+                break;
+            case MeasureSpec.EXACTLY :
+                height = heightMeasureSize;
+                break;
+            case MeasureSpec.AT_MOST :
+                height = Math.min(heightMeasureSize,getDesireHeight());
+                break;
+        }
+        //Tell to system measured size in px
+        setMeasuredDimension(width,height);
+
+
+
         setMeasuredDimension((int)dp2px(300),(int)dp2px(240));
+    }
+
+    private int getDesireHeight() {
+        return 0;
+    }
+
+    private int getDesireWidth() {
+        return 0;
     }
 
     private float dp2px(int dp){

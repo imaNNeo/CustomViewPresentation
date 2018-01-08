@@ -16,8 +16,10 @@ import android.graphics.Path;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Shader;
+import android.graphics.Typeface;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 import android.view.View;
 
 import com.neo.customviewpresentation.R;
@@ -44,6 +46,12 @@ public class MyShowingCanvasView extends View{
     Bitmap patternText;
 
     Path mPath;
+
+    boolean isTouchDown = false;
+    int touchX;
+    int touchY;
+
+    Paint touchPaint;
 
     public MyShowingCanvasView(Context context) {
         super(context);
@@ -79,6 +87,14 @@ public class MyShowingCanvasView extends View{
 
         patternBg = BitmapFactory.decodeResource(getResources(),R.drawable.pattern4);
         patternText = BitmapFactory.decodeResource(getResources(),R.drawable.pattern2);
+
+
+        touchPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        touchPaint.setStyle(Paint.Style.FILL_AND_STROKE);
+        touchPaint.setColor(Color.BLUE);
+        touchPaint.setStrokeWidth(dp2px(1));
+        touchPaint.setTextSize(sp2px(18));
+        touchPaint.setTypeface(Typeface.create(touchPaint.getTypeface(),Typeface.BOLD));
     }
 
 
@@ -93,6 +109,18 @@ public class MyShowingCanvasView extends View{
             for(int y = 1;y<=8;y++){
                 canvas.drawLine(0, y*axisXYSize,getWidth(),y*axisXYSize, axisPaint);
             }
+        }
+
+
+        if(isTouchDown){
+            canvas.drawLine(0,touchY,
+                    getWidth(),touchY, touchPaint);
+            canvas.drawLine(touchX,0,
+                    touchX,getHeight(), touchPaint);
+            canvas.drawText("x : " + touchX
+                    + " , y : " + touchY + " (Touch Down)",
+                    dp2px(8),getHeight()-dp2px(8),
+                    touchPaint);
         }
 
 
@@ -282,7 +310,7 @@ public class MyShowingCanvasView extends View{
 
 //        drawTextShader(canvas);
 
-        drawBitmapShader(canvas);
+//        drawBitmapShader(canvas);
 
 
     }
@@ -427,4 +455,31 @@ public class MyShowingCanvasView extends View{
     private float sp2px(int sp){
         return SizeConverter.spToPx(getContext(),sp);
     }
+
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        super.onTouchEvent(event);
+
+        touchX = (int) event.getX();
+        touchY = (int) event.getY();
+
+        switch (event.getAction()){
+            case MotionEvent.ACTION_DOWN :
+                isTouchDown = true;
+                break;
+
+            case MotionEvent.ACTION_MOVE :
+                break;
+
+            case MotionEvent.ACTION_UP :
+                isTouchDown = false;
+                break;
+        }
+
+        invalidate();
+        return true;
+    }
+
+
 }

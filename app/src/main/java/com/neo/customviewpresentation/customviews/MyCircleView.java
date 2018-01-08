@@ -1,5 +1,6 @@
 package com.neo.customviewpresentation.customviews;
 
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
@@ -8,6 +9,7 @@ import android.graphics.Paint;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.animation.OvershootInterpolator;
 
 import com.neo.customviewpresentation.R;
 import com.neo.customviewpresentation.SizeConverter;
@@ -18,8 +20,11 @@ import com.neo.customviewpresentation.SizeConverter;
  */
 public class MyCircleView extends View{
 
-    Paint mPaint;
+    Paint mPaint,mPaint2;
     float radius;
+
+    float degree = 0;
+    float radius2;
 
     public MyCircleView(Context context) {
         super(context);
@@ -53,6 +58,28 @@ public class MyCircleView extends View{
         mPaint.setColor(Color.BLUE);
         mPaint.setStyle(Paint.Style.STROKE);
         radius = dp2px(80);
+
+
+        mPaint2 = new Paint(Paint.ANTI_ALIAS_FLAG);
+        mPaint2.setColor(Color.MAGENTA);
+        mPaint2.setStyle(Paint.Style.FILL);
+        radius2 = dp2px(22);
+
+
+        ValueAnimator animator = ValueAnimator.ofFloat(0,360);
+        animator.setInterpolator(new OvershootInterpolator());
+        animator.setDuration(2000);
+        animator.setRepeatCount(ValueAnimator.INFINITE);
+        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                degree = (float) animation.getAnimatedValue();
+                invalidate();
+            }
+        });
+        animator.start();
+
+
     }
 
     public void setStrokeSize(float strokeSize){
@@ -113,20 +140,39 @@ public class MyCircleView extends View{
 
     private int getDesireHeight() {
         int vPadding = getPaddingTop() + getPaddingBottom();
-        return (int) ((radius * 2) + mPaint.getStrokeWidth() + vPadding);
+        return (int) ((radius * 2) + Math.max(mPaint.getStrokeWidth(),radius2*2) + vPadding);
     }
 
     private int getDesireWidth() {
         int hPadding = getPaddingLeft() + getPaddingRight();
-        return (int) ((radius * 2) + mPaint.getStrokeWidth() + hPadding);
+        return (int) ((radius * 2) + Math.max(mPaint.getStrokeWidth(),radius2*2) + hPadding);
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+
+        //Draw Main Circle
         int centerX = getWidth()/2;
         int centerY = getHeight()/2;
         canvas.drawCircle(centerX,centerY,radius,mPaint);
+
+
+        //Draw the second Circle
+        float drawX =
+                (float) Math.cos(
+                        Math.toRadians(degree));
+        drawX *= radius;
+        drawX += centerX;
+        float drawY =
+                (float) Math.sin(
+                        Math.toRadians(degree));
+        drawY *= radius;
+        drawY += centerY;
+        canvas.drawCircle(drawX,drawY,
+                radius2,mPaint2);
+
+
     }
 
     private float dp2px(int dp){

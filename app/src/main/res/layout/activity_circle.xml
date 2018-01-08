@@ -10,15 +10,18 @@
         android:layout_height="wrap_content"
         android:background="#b6b6b6"
         android:layout_centerInParent="true"
-        app:mcv_stroke_size="80dp"
+        app:mcv_stroke_size="16dp"
+        android:padding="8dp"
         />
 
+    <!--Todo visible it to test set stroke size dynamically-->
     <SeekBar
         android:id="@+id/sb_strokeSize"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_margin="8dp"
+        android:visibility="invisible"
         />
 
 </RelativeLayout>

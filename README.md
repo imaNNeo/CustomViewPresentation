@@ -9,6 +9,6 @@
 
 [Aparat](https://www.aparat.com/v/tPX3L)
 
-[ArcChartView](github.com/imaNNeoFighT/ArcChartView)
+[ArcChartView](https://github.com/imaNNeoFighT/ArcChartView)
 
-[Twitter](twitter.com/iman_khoshabi)
+[Twitter](https://twitter.com/iman_khoshabi)
